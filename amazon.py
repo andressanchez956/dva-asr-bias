@@ -5,6 +5,7 @@ import urllib
 import json
 
 transcribe_client = boto3.client('transcribe')
+text_file = open('/Users/andressanchez/Dropbox/Mac/Desktop/amazon_s101_3.txt','w')
 
 def transcribe_file(job_name, file_uri, transcribe_client):
     transcribe_client.start_transcription_job(
@@ -24,7 +25,7 @@ def transcribe_file(job_name, file_uri, transcribe_client):
                 response = urllib.request.urlopen(job['TranscriptionJob']['Transcript']['TranscriptFileUri'])
                 data = json.loads(response.read())
                 text = data['results']['transcripts'][0]['transcript']
-                
+                text_file.write(job_name[0] + '\n' + text + '\n\n\n')
             break
 
 def get_file_names():
@@ -44,7 +45,7 @@ def main():
 
     for f in files:
         file_uri = 's3://dva-asr-bias/s101_3/' + f
-        job_name = 'job-' + f
+        job_name = f
         transcribe_file(job_name, file_uri, transcribe_client)
 
 
