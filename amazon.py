@@ -5,9 +5,8 @@ import urllib
 import json
 
 transcribe_client = boto3.client('transcribe')
-text_file = open('/Users/andressanchez/Dropbox/Mac/Desktop/amazon_s101_3.txt','w')
 
-def transcribe_file(job_name, file_uri, transcribe_client):
+def transcribe_file(job_name, file_uri, transcribe_client, text_file):
     transcribe_client.start_transcription_job(
         TranscriptionJobName=job_name,
         Media={'MediaFileUri': file_uri},
@@ -22,32 +21,41 @@ def transcribe_file(job_name, file_uri, transcribe_client):
         job_status = job['TranscriptionJob']['TranscriptionJobStatus']
         if job_status in ['COMPLETED', 'FAILED']:
             if job_status == 'COMPLETED':
+                print("completed " + job_name)
                 response = urllib.request.urlopen(job['TranscriptionJob']['Transcript']['TranscriptFileUri'])
                 data = json.loads(response.read())
                 text = data['results']['transcripts'][0]['transcript']
-                text_file.write(job_name[0] + '\n' + text + '\n\n\n')
+                text_file.write(text)
+                text_file.close()
             break
 
 def get_file_names():
-    path ="/Users/andressanchez/Dropbox/Mac/Desktop/participant_files/snippets/s101/s101_3"
+    path ="/Users/andressanchez/Dropbox/Mac/Desktop/participant_files/snippets"
     #we shall store all the file names in this list
     filelist = []
 
     for root, dirs, files in os.walk(path):
         for file in files:
             #append the file name to the list
-            filelist.append(file)
+            if "DS" not in file:
+                filelist.append(file)
 
     return sorted(filelist)
 
 def main():
-    files = get_file_names()
+    file_names = get_file_names()
+    # file_names = ["s104_1.wav", "s104_2h.wav", "s104_2s.wav", "s105_1.wav", "s105_2h.wav", "s105_2s.wav"]
 
-    for f in files:
-        file_uri = 's3://dva-asr-bias/s101_3/' + f
-        job_name = f
-        transcribe_file(job_name, file_uri, transcribe_client)
+    for name in file_names:
+        job_name = "v3_" + name
 
+        if name[0] != "s":
+            file_uri = 's3://dva-asr-bias/snippets/s' + name[1:4] + '/s' + name[1:6] + '/' + name
+        else:
+            file_uri = 's3://dva-asr-bias/snippets/' + name[:4] + '/' + name
 
+        text_file = open('/Users/andressanchez/Dropbox/Mac/Desktop/amazon_transcripts/' + name[1:4] + '/ama_' + name[:-4] + '.txt','w')
+        transcribe_file(job_name, file_uri, transcribe_client, text_file)
+        
 if __name__ == '__main__':
     main()
