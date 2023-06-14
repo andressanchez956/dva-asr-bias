@@ -31,17 +31,19 @@ def transcribe_file(job_name, file_uri, transcribe_client, text_file):
             break
 
 def main():
-    file_names = utils.get_file_names()
-    # file_names = ["s104_1.wav", "s104_2h.wav", "s104_2s.wav", "s105_1.wav", "s105_2h.wav", "s105_2s.wav"]
+    file_names = utils.get_file_names("/Users/andressanchez/Dropbox/Mac/Desktop/participant_files/snippets")
 
     for name in file_names:
+        # need new job names for every attempt
         job_name = "v3_" + name
 
+        # handle filenames for different tasks to make s3 uri
         if name[0] != "s":
             file_uri = 's3://dva-asr-bias/snippets/s' + name[1:4] + '/s' + name[1:6] + '/' + name
         else:
             file_uri = 's3://dva-asr-bias/snippets/' + name[:4] + '/' + name
 
+        # open text files in correct folder
         text_file = open('/Users/andressanchez/Dropbox/Mac/Desktop/amazon_transcripts/' + name[1:4] + '/ama_' + name[:-4] + '.txt','w')
         transcribe_file(job_name, file_uri, transcribe_client, text_file)
         
