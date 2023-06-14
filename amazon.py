@@ -3,6 +3,7 @@ import boto3
 import time
 import urllib
 import json
+import utils
 
 transcribe_client = boto3.client('transcribe')
 
@@ -29,21 +30,8 @@ def transcribe_file(job_name, file_uri, transcribe_client, text_file):
                 text_file.close()
             break
 
-def get_file_names():
-    path ="/Users/andressanchez/Dropbox/Mac/Desktop/participant_files/snippets"
-    #we shall store all the file names in this list
-    filelist = []
-
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            #append the file name to the list
-            if "DS" not in file:
-                filelist.append(file)
-
-    return sorted(filelist)
-
 def main():
-    file_names = get_file_names()
+    file_names = utils.get_file_names()
     # file_names = ["s104_1.wav", "s104_2h.wav", "s104_2s.wav", "s105_1.wav", "s105_2h.wav", "s105_2s.wav"]
 
     for name in file_names:
