@@ -2,6 +2,7 @@ import string
 import re
 from num2words import num2words
 from jiwer import wer
+import os
 
 
 def get_file_names(path):
@@ -39,10 +40,12 @@ def clean_text(filename):
 
     # remove ums and uhs
     text = re.sub('( um )|( uh )', ' ', text)
+
+    return text
     
-    clean_file = open('/Users/andressanchez/Dropbox/Mac/Desktop/ama_transcripts_clean/' + filename[5:8] + '/c_' + filename,'w')
-    clean_file.write(text)
-    clean_file.close()
+    # clean_file = open('/Users/andressanchez/Dropbox/Mac/Desktop/ama_transcripts_clean/' + filename[5:8] + '/c_' + filename,'w')
+    # clean_file.write(text)
+    # clean_file.close()
 
 def calc_wer(gt, mt):
     return wer(gt, mt)
