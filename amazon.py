@@ -45,7 +45,7 @@ def main():
 
         # open text files in correct folder
         text_file = open('/Users/andressanchez/Dropbox/Mac/Desktop/amazon_transcripts/' + name[1:4] + '/ama_' + name[:-4] + '.txt','w')
-        transcribe_file(job_name, file_uri, transcribe_client, text_file)
+        # transcribe_file(job_name, file_uri, transcribe_client, text_file)
         
 if __name__ == '__main__':
     main()

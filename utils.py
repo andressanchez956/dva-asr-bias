@@ -18,11 +18,11 @@ def get_file_names(path):
     return sorted(filelist)
 
 
-def clean_text(filename):
+def clean_text(file, filename):
     # read file to memory
-    file = open(filename, 'rt')
-    text = file.read()
-    file.close()
+    f = open(file, 'rt')
+    text = f.read()
+    f.close()
 
     # find all numbers in text
     numbers = re.findall('\d+', text)
