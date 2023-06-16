@@ -40,12 +40,7 @@ def clean_text(file, filename):
 
     # remove ums and uhs
     text = re.sub('( um )|( uh )', ' ', text)
-
-    return text
     
-    # clean_file = open('/Users/andressanchez/Dropbox/Mac/Desktop/ama_transcripts_clean/' + filename[5:8] + '/c_' + filename,'w')
-    # clean_file.write(text)
-    # clean_file.close()
-
-def calc_wer(gt, mt):
-    return wer(gt, mt)
+    clean_file = open('/Users/andressanchez/Dropbox/Mac/Desktop/ggl_transcripts_clean/' + filename[5:8] + '/c_' + filename,'w')
+    clean_file.write(text)
+    clean_file.close()

@@ -1,6 +1,7 @@
 import pandas as pd
 import utils
 from jiwer import wer
+import audioread
 
 # file_names = utils.get_file_names("/Users/andressanchez/Dropbox/Mac/Desktop/ama_transcripts_raw")
 # for name in file_names:
@@ -13,7 +14,7 @@ def calc_wer(file, filename, task):
     f.close()
 
     if task == '1' or task == '2':
-        gt_file = gt_file = "/Users/andressanchez/Dropbox/Mac/Desktop/gt_transcripts_clean/task_" + task + ".txt"
+        gt_file = "/Users/andressanchez/Dropbox/Mac/Desktop/gt_transcripts_clean/task_" + task + ".txt"
     else:
         gt_file = "/Users/andressanchez/Dropbox/Mac/Desktop/gt_transcripts_clean/" + filename[7:10] + "/" + filename[6:]
 
@@ -40,16 +41,17 @@ def make_row_list(file, filename):
     return row_list
 
 def main():
-    file_names = utils.get_file_names("/Users/andressanchez/Dropbox/Mac/Desktop/ama_transcripts_clean")
+    file_names = utils.get_file_names("/Users/andressanchez/Dropbox/Mac/Desktop/machine_transcripts_clean")
     # file_names = ['c_ama_l101_4.txt', 'c_ama_s101_1.txt', 'c_ama_s101_2h.txt', 'c_ama_s101_2s.txt']
 
     rows = []
     for name in file_names:
-        row = make_row_list("/Users/andressanchez/Dropbox/Mac/Desktop/ama_transcripts_clean/" + name[7:10] + "/" + name, name)
+        company = name[2:5]
+        row = make_row_list("/Users/andressanchez/Dropbox/Mac/Desktop/ggl_transcripts_clean/" + name[7:10] + "/" + name, name)
         rows.append(row)
     
     df = pd.DataFrame(rows, columns=['file', 'participant', 'task', 'WER'])
-    df.to_csv('/Users/andressanchez/Dropbox/Mac/Desktop/ama_wer.csv', index=False)
+    df.to_csv('/Users/andressanchez/Dropbox/Mac/Desktop/ggl_wer.csv', index=False)
         
 if __name__ == '__main__':
     main()

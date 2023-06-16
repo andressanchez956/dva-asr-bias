@@ -44,7 +44,7 @@ def main():
             file_uri = 's3://dva-asr-bias/snippets/' + name[:4] + '/' + name
 
         # open text files in correct folder
-        text_file = open('/Users/andressanchez/Dropbox/Mac/Desktop/amazon_transcripts/' + name[1:4] + '/ama_' + name[:-4] + '.txt','w')
+        text_file = open('/Users/andressanchez/Dropbox/Mac/Desktop/ama_transcripts_raw/' + name[1:4] + '/ama_' + name[:-4] + '.txt','w')
         # transcribe_file(job_name, file_uri, transcribe_client, text_file)
         
 if __name__ == '__main__':
